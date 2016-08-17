@@ -13,6 +13,7 @@ func Mopup(corpus []string) []string{
 		corpus[i] = strings.ToLower(data)
 		corpus[i] = re.ReplaceAllString(corpus[i], "")
 		corpus[i] = RemoveStopWords(corpus[i] , stopWords)
+		corpus[i] = RemoveExtraWhiteSpaces(corpus[i])
 	}
 	return corpus
 }
@@ -30,3 +31,8 @@ func RemoveStopWords(line string, stopWords []string) string{
 	return re.ReplaceAllString(line, "")
 }
 
+func RemoveExtraWhiteSpaces(line string) string{
+	re := regexp.MustCompile(`^[\s\p{Zs}]+|[\s\p{Zs}]+$`) //trim
+	line =  re.ReplaceAllString(line, "")
+	return re.ReplaceAllString(line, "")
+}
