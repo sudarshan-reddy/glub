@@ -35,7 +35,7 @@ type mop struct{
 func (m *mop) mopupSlv(wg *sync.WaitGroup, i int, data string) {
 	fmt.Println("Starting " , i)
 	defer wg.Done()
-	re := regexp.MustCompile("[0-9!-<>:@?/(),\"]+")
+	re := regexp.MustCompile("[0-9!-<>':@?/(),\"]+")
 	m.corpus[i] = strings.ToLower(data)
 	m.corpus[i] = re.ReplaceAllString(m.corpus[i], "")
 	m.corpus[i] = RemoveStopWords(m.corpus[i] , m.stopWords)
