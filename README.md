@@ -1,5 +1,7 @@
 # Simple Corpus creator
 
+TODO: There is a bug where it creates too many parellel threads sometimes. Need to fix this.
+
 Currently only supports text based files from a directory.
 
 Loops through a directory, prunes stop words, certain punctuations and 
