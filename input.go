@@ -5,6 +5,8 @@ import (
 	"os"
 	"path/filepath"
 	"io/ioutil"
+	"regexp"
+	"strings"
 )
 
 func GetFiles(dir string) []string {
@@ -19,13 +21,29 @@ func GetFiles(dir string) []string {
 }
 
 func ReadFiles(fileList []string) []string {
+
 	corpus := []string{}
+	regStr := ""
+
+	for i, word := range returnStopWords(){
+		if i != 0{
+			regStr += `|`
+		}
+		regStr += `\b\Q` +  word +  `\E\b`
+	}
+	re1 := regexp.MustCompile("[0-9!-<>':@?/(),\"]+")
+	re2 := regexp.MustCompile(regStr)
+
 	for _, files := range fileList{
 		body, err := ioutil.ReadFile(files)
 		if err != nil{
 			fmt.Println(err)
 		}
-		corpus = append(corpus, string(body))
+		data := strings.ToLower(string(body))
+		data = re1.ReplaceAllString(data, "")
+		data = re2.ReplaceAllString(data, "")
+		
+		corpus = append(corpus, data)
 	}
 	return corpus
 }

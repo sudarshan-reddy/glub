@@ -5,8 +5,10 @@ import (
 	"strings"
 )
 
-func GenTokens(inputset []string , tokens map[string]int) map[string]int {
+func GenTokens(inputset []string) []map[string]int {
+	dataset := make([]map[string]int, len(inputset))
 	for _, emails := range inputset{
+		tokens := make(map[string]int)
 		reader := strings.NewReader(emails)
 		var scn scanner.Scanner
 		scn.Init(reader)
@@ -16,6 +18,7 @@ func GenTokens(inputset []string , tokens map[string]int) map[string]int {
 				tok = scn.Scan()
 				tokens[scn.TokenText()]++
 		}
+		dataset = append(dataset,tokens)
 	}
-	return tokens	
+	return dataset	
 }
