@@ -31,8 +31,7 @@ func ReadFiles(fileList []string) []string {
 		}
 		regStr += `\b\Q` +  word +  `\E\b`
 	}
-	re1 := regexp.MustCompile("[0-9!-<>':@?/(),\"]+")
-	re2 := regexp.MustCompile(regStr)
+	re := regexp.MustCompile(regStr + "|[0-9!-<>':@?/(),\"]+")
 
 	for _, files := range fileList{
 		body, err := ioutil.ReadFile(files)
@@ -40,8 +39,7 @@ func ReadFiles(fileList []string) []string {
 			fmt.Println(err)
 		}
 		data := strings.ToLower(string(body))
-		data = re1.ReplaceAllString(data, "")
-		data = re2.ReplaceAllString(data, "")
+		data = re.ReplaceAllString(data, "")
 		
 		corpus = append(corpus, data)
 	}
