@@ -3,6 +3,8 @@ package glub
 import (
 	"text/scanner"
 	"strings"
+	"strconv"
+	"fmt"
 )
 
 func GenTokens(inputset []string) ([]string, []map[string]int) {
@@ -26,15 +28,15 @@ func GenTokens(inputset []string) ([]string, []map[string]int) {
 	return allTokens, dataset	
 }
 
-func Prep(tokens []string, metadata []map[string]int, spam int) [][]int{
-	var newSet []int
-	var allWords [][]int
+func Prep(tokens []string, metadata []map[string]int, spam int) [][]string{
+	var newSet []string
+	var allWords [][]string
 	for _ , values := range metadata{
-		newSet = []int{}
+		newSet = []string{}
 		for _ , words := range tokens{
-			newSet = append(newSet, values[words])
+			newSet = append(newSet, strconv.Itoa(values[words]))
 		}
-		newSet = append(newSet, spam)
+		newSet = append(newSet, strconv.Itoa(spam))
 		allWords = append(allWords, newSet)
 	}
 	return allWords

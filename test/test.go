@@ -14,9 +14,7 @@ func main(){
 	content := glub.ReadFiles(fileList)
 	allTokens, metadata := glub.GenTokens(content)
 	dataset := glub.Prep(allTokens, metadata, 0)
-	for _, vals := range dataset{
-		fmt.Println(vals)
-	}
+	glub.WriteToCsv(allTokens, dataset, "data.csv")
 
 	fmt.Println(allTokens)
 	elapsed := time.Since(start)
