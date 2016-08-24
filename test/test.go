@@ -13,7 +13,7 @@ func main(){
 	fileList := glub.GetFiles(path)
 	content := glub.ReadFiles(fileList)
 	allTokens, metadata := glub.GenTokens(content)
-	dataset := glub.Prep(allTokens, metadata)
+	dataset := glub.Prep(allTokens, metadata, 0)
 	for _, vals := range dataset{
 		fmt.Println(vals)
 	}

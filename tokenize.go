@@ -5,19 +5,6 @@ import (
 	"strings"
 )
 
-func Zip(rawData [][]int) [][]int {
-	var transpose [][]int
-	for i := 0; i < len(rawData[0]); i++{
-		cog := make([]int, len(rawData[0]))
-		for _, vals := range rawData {
-			cog = append(cog,vals[i])
-		}
-		transpose = append(transpose, cog)
-	}
-	return transpose
-
-}
-
 func GenTokens(inputset []string) ([]string, []map[string]int) {
 	var dataset []map[string]int
 	var allTokens []string
@@ -39,19 +26,16 @@ func GenTokens(inputset []string) ([]string, []map[string]int) {
 	return allTokens, dataset	
 }
 
-func Prep(tokens []string, metadata []map[string]int) [][]int{
+func Prep(tokens []string, metadata []map[string]int, spam int) [][]int{
+	var newSet []int
 	var allWords [][]int
-	for _ , word := range tokens{
-		var wordSet []int 
-		for _ , stuff := range metadata{
-			if stuff[word] != 0{
-				wordSet = append(wordSet, stuff[word])	
-			}else{
-				wordSet = append(wordSet, 0)
-			}
+	for _ , values := range metadata{
+		newSet = []int{}
+		for _ , words := range tokens{
+			newSet = append(newSet, values[words])
 		}
-		allWords = append(allWords, wordSet)
+		newSet = append(newSet, spam)
+		allWords = append(allWords, newSet)
 	}
-	Zip(allWords)
-	return Zip(allWords)
+	return allWords
 }
