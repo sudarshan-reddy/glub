@@ -3,43 +3,24 @@ package glub
 import (
 	"text/scanner"
 	"strings"
-	"sort"
 )
 
-func SortByVal(wordFrequencies map[string]int) PairList{
-  pl := make(PairList, len(wordFrequencies))
-  i := 0
-  for k, v := range wordFrequencies {
-    pl[i] = Pair{k, v}
-    i++
-  }
-  sort.Sort(sort.Reverse(pl))
-  return pl
+func Zip(rawData [][]int) [][]int {
+	var transpose [][]int
+	for i := 0; i < len(rawData[0]); i++{
+		cog := make([]int, len(rawData[0]))
+		for _, vals := range rawData {
+			cog = append(cog,vals[i])
+		}
+		transpose = append(transpose, cog)
+	}
+	return transpose
+
 }
 
-/*overriding sort*/
-type Pair struct {
-  Key string
-  Value int
-}
-
-type PairList []Pair
-
-func (p PairList) Len() int {
-	return len(p) 
-}
-
-func (p PairList) Less(i, j int) bool {
-	return p[i].Value < p[j].Value
-}
-
-func (p PairList) Swap(i, j int){
-	p[i], p[j] = p[j], p[i]
-}
-
-func GenTokens(inputset []string) (map[string]int, []map[string]int) {
+func GenTokens(inputset []string) ([]string, []map[string]int) {
 	var dataset []map[string]int
-	allTokens := make(map[string]int)
+	var allTokens []string
 	for _, emails := range inputset{
 		tokens := make(map[string]int)
 		reader := strings.NewReader(emails)
@@ -47,20 +28,20 @@ func GenTokens(inputset []string) (map[string]int, []map[string]int) {
 		scn.Init(reader)
 		tok := scn.Scan()
 		tokens[scn.TokenText()]++ 
-		allTokens[scn.TokenText()] = 0
+		allTokens = append(allTokens, scn.TokenText())
 		for tok != scanner.EOF{
 			tok = scn.Scan()
 			tokens[scn.TokenText()]++
-			allTokens[scn.TokenText()] = 0
+			allTokens = append(allTokens, scn.TokenText())
 		}
 		dataset = append(dataset,tokens)
 	}
 	return allTokens, dataset	
 }
 
-func Prep(tokens map[string]int, metadata []map[string]int) [][]int{
+func Prep(tokens []string, metadata []map[string]int) [][]int{
 	var allWords [][]int
-	for word , _ := range tokens{
+	for _ , word := range tokens{
 		var wordSet []int 
 		for _ , stuff := range metadata{
 			if stuff[word] != 0{
@@ -71,5 +52,6 @@ func Prep(tokens map[string]int, metadata []map[string]int) [][]int{
 		}
 		allWords = append(allWords, wordSet)
 	}
-	return allWords
+	Zip(allWords)
+	return Zip(allWords)
 }
