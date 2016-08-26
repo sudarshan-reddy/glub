@@ -4,7 +4,6 @@ import (
 	"text/scanner"
 	"strings"
 	"strconv"
-	"fmt"
 )
 
 func GenTokens(inputset []string) ([]string, []map[string]int) {
